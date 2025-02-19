@@ -1,0 +1,36 @@
+server:
+  port: 9090
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ewm-stats
+    username: root
+    password: root
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update # или validate, create, create-drop
+    show-sql: true # Показывать SQL-запросы в логах
+
+  sql:
+    init:
+      mode: always # Запускать скрипты schema.sql и data.sql при старте
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:h2:mem:testdb  # Для тестов, база будет удалена после завершения
+    username: sa
+    password: password
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop  # Для тестов, схема будет создана и удалена после завершения тестов
+    show-sql: true
