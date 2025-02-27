@@ -1,9 +1,13 @@
 server:
-  port: 9090
+  port: 8080
+
+logging:
+  level:
+    ru.yandex.practicum: DEBUG
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/ewm-stats
+    url: jdbc:postgresql://localhost:5432/ewm-main
     username: root
     password: root
     driver-class-name: org.postgresql.Driver
@@ -11,7 +15,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: none # или validate, create, create-drop
+      ddl-auto: none # или update validate, create, create-drop
     show-sql: true # Показывать SQL-запросы в логах
 
   sql:

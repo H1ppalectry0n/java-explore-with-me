@@ -30,8 +30,8 @@ public class EwmStatsClient {
     private final String application;
     private final String statsServiceUri;
 
-    public EwmStatsClient(@Value("ewm-main-service") String application,
-                          @Value("http:/localhost:9090") String statsServiceUri) {
+    public EwmStatsClient(@Value("${app.name:ewm-main-service}") String application,
+                          @Value("${app.stats.uri:http://localhost:9090}") String statsServiceUri) {
         this.application = application;
         this.statsServiceUri = statsServiceUri;
 
