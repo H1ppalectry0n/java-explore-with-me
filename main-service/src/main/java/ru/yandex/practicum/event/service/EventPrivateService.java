@@ -4,6 +4,7 @@ import jakarta.annotation.Nonnull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.category.CategoryModel;
 import ru.yandex.practicum.category.CategoryRepository;
 import ru.yandex.practicum.event.dto.EventFullDto;
@@ -31,6 +32,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class EventPrivateService {
 
     private final EventRepository eventRepository;
@@ -40,6 +42,7 @@ public class EventPrivateService {
 
     private static final int HOURS_TO_PUBLISH = 2;
 
+    @Transactional(readOnly = true)
     public List<EventFullDto> findByUserId(long userId, int from, int size) {
         UserModel user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(
                 "User with id=%d was not found".formatted(userId)
@@ -59,7 +62,7 @@ public class EventPrivateService {
                 "Category with id=%d was not found".formatted(newEvent.getCategory())
         ));
 
-        if (newEvent.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
+        if (newEvent.getEventDate().isBefore(LocalDateTime.now().plusHours(HOURS_TO_PUBLISH))) {
             throw new ForbiddenException("Field: eventDate. Error: должно содержать дату, которая еще не наступила.");
         }
 
@@ -82,6 +85,7 @@ public class EventPrivateService {
         return EventMapper.toFullDto(eventRepository.save(event));
     }
 
+    @Transactional(readOnly = true)
     public EventFullDto findByEventIdForUser(long userId, long eventId) {
         UserModel user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(
                 "User with id=%d was not found".formatted(userId)
@@ -160,6 +164,7 @@ public class EventPrivateService {
         return EventMapper.toFullDto(eventRepository.save(event));
     }
 
+    @Transactional(readOnly = true)
     public List<ParticipationRequestDto> findAllRequestsForEvent(long userId, long eventId) {
         UserModel user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(
                 "User with id=%d was not found".formatted(userId)
