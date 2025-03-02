@@ -34,6 +34,9 @@ public class EwmStatsController {
             @RequestParam(name = "end") @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime end,
             @RequestParam(required = false, name = "uris") List<String> uris,
             @RequestParam(required = false, name = "unique", defaultValue = "false") boolean unique) {
+        if (start != null && end != null && start.isAfter(end)) {
+            throw new IllegalArgumentException("rangeStart должен быть раньше rangeEnd");
+        }
         return ewmStatsService.stats(start, end, uris, unique);
     }
 }
