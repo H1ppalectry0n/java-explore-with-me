@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.event.dto.EventFullDto;
 import ru.yandex.practicum.event.dto.EventSortType;
 import ru.yandex.practicum.event.mapper.EventMapper;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class EventPublicService {
 
     private final EventRepository eventRepository;
@@ -97,6 +99,7 @@ public class EventPublicService {
         };
     }
 
+    @Transactional(readOnly = true)
     private List<EventModel> filterByParticipantLimit(List<EventModel> events) {
         // Получение количества участников для каждого события
         Map<Long, Integer> participantCountList = requestRepository.findParticipantCount(events.stream().map(EventModel::getId).toList())

@@ -5,7 +5,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.EwmStatsClient;
@@ -21,7 +20,6 @@ import java.util.List;
 @RequestMapping("/admin/events")
 @Slf4j
 @RequiredArgsConstructor
-@Transactional
 @Validated
 public class EventAdminController {
 
@@ -38,7 +36,7 @@ public class EventAdminController {
                                                  @RequestParam(name = "size", required = false, defaultValue = "10") int size,
                                                  HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("EventAdmin: find events with param = { users = {}, states = {}, categories = {}, start = {}, end = {} }",
+        log.info("EventAdmin: find events with param = { users = {}, states = {}, categories = {}, start = {}, end = {} }",
                 userIds, states, categoryIds, rangeStart, rangeEnd);
         return eventAdminService.findAllWithFilters(from, size, userIds, states, categoryIds, rangeStart, rangeEnd);
     }
@@ -46,7 +44,7 @@ public class EventAdminController {
     @PatchMapping("/{eventId}")
     public EventFullDto patchEventWithId(@PathVariable(name = "eventId") long eventId, @RequestBody @Valid UpdateEventAdminDto updateEventDto, HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("EventAdmin: path event with id={} {}", eventId, updateEventDto);
+        log.info("EventAdmin: path event with id={} {}", eventId, updateEventDto);
         return eventAdminService.patchEventWithId(eventId, updateEventDto);
     }
 }

@@ -21,12 +21,4 @@ public interface EventRepository extends JpaRepository<EventModel, Long>, JpaSpe
 
     @EntityGraph(attributePaths = {"category", "initiator"})
     Optional<EventModel> findByIdAndInitiator(Long id, UserModel initiator);
-
-//    @Modifying
-//    @Query("UPDATE EventModel e SET e.views = e.views + 1 WHERE e.id = :eventId")
-//    void incrementViews(@Param("eventId") Long eventId);
-//
-//    @Modifying
-//    @Query("UPDATE EventModel e SET e.views = e.views + 1 WHERE e.id IN :eventIds")
-//    void incrementViews(@Param("eventIds") List<Long> eventIds);
 }

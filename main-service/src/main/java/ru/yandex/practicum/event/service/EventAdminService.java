@@ -29,12 +29,16 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class EventAdminService {
 
     private final EventRepository eventRepository;
     private final CategoryRepository categoryRepository;
     private final RequestRepository requestRepository;
 
+    private static final int HOURS_TO_PUBLISH = 1;
+
+    @Transactional(readOnly = true)
     public List<EventFullDto> findAllWithFilters(int from, int size, List<Long> userIds, List<EventState> states,
                                                  List<Long> categoryIds, LocalDateTime rangeStart, LocalDateTime rangeEnd) {
         // Создание фильтра
@@ -59,7 +63,7 @@ public class EventAdminService {
         ));
 
         if (updateEventDto.getEventDate() != null) {
-            if (updateEventDto.getEventDate().isBefore(LocalDateTime.now().plusHours(1))) {
+            if (updateEventDto.getEventDate().isBefore(LocalDateTime.now().plusHours(HOURS_TO_PUBLISH))) {
                 throw new ForbiddenException("Cannot publish the event because it's not in the right state: EVENT_DATE");
             }
 

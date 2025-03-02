@@ -24,14 +24,14 @@ public class CategoryPublicController {
                                      @RequestParam(name = "size", required = false, defaultValue = "10") int size,
                                      HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("CategoryPublic: findAll from={}, size={}", from, size);
+        log.info("CategoryPublic: findAll from={}, size={}", from, size);
         return categoryPublicService.findAll(from, size);
     }
 
     @GetMapping("/{catId}")
     public CategoryDto findById(@PathVariable(name = "catId") long catId, HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("CategoryPublic: find by id={}", catId);
+        log.info("CategoryPublic: find by id={}", catId);
         return categoryPublicService.findById(catId);
     }
 }

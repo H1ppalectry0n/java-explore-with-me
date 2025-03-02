@@ -38,6 +38,8 @@ public class EventPrivateService {
     private final CategoryRepository categoryRepository;
     private final RequestRepository requestRepository;
 
+    private static final int HOURS_TO_PUBLISH = 2;
+
     public List<EventFullDto> findByUserId(long userId, int from, int size) {
         UserModel user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(
                 "User with id=%d was not found".formatted(userId)
@@ -61,20 +63,21 @@ public class EventPrivateService {
             throw new ForbiddenException("Field: eventDate. Error: должно содержать дату, которая еще не наступила.");
         }
 
-        EventModel event = new EventModel();
-        event.setAnnotation(newEvent.getAnnotation());
-        event.setCategory(category);
-        event.setDescription(newEvent.getDescription());
-        event.setEventDate(newEvent.getEventDate());
-        event.setCreatedOn(LocalDateTime.now());
-        event.setLocationLat(newEvent.getLocation().getLat());
-        event.setLocationLon(newEvent.getLocation().getLon());
-        event.setPaid(newEvent.getPaid());
-        event.setParticipantLimit(newEvent.getParticipantLimit());
-        event.setRequestModeration(newEvent.getRequestModeration());
-        event.setTitle(newEvent.getTitle());
-        event.setInitiator(user);
-        event.setState(EventState.PENDING);
+        EventModel event = EventModel.builder()
+                .annotation(newEvent.getAnnotation())
+                .category(category)
+                .description(newEvent.getDescription())
+                .eventDate(newEvent.getEventDate())
+                .createdOn(LocalDateTime.now())
+                .locationLat(newEvent.getLocation().getLat())
+                .locationLon(newEvent.getLocation().getLon())
+                .paid(newEvent.getPaid())
+                .participantLimit(newEvent.getParticipantLimit())
+                .requestModeration(newEvent.getRequestModeration())
+                .title(newEvent.getTitle())
+                .initiator(user)
+                .state(EventState.PENDING)
+                .build();
 
         return EventMapper.toFullDto(eventRepository.save(event));
     }
@@ -103,7 +106,7 @@ public class EventPrivateService {
         }
 
         if (updatedEvent.getEventDate() != null) {
-            if (updatedEvent.getEventDate().isBefore(LocalDateTime.now().plusHours(2))) {
+            if (updatedEvent.getEventDate().isBefore(LocalDateTime.now().plusHours(HOURS_TO_PUBLISH))) {
                 throw new ForbiddenException("Field: eventDate. Error: должно содержать дату, которая еще не наступила.");
             }
 

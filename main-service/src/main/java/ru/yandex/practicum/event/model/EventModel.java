@@ -1,9 +1,7 @@
 package ru.yandex.practicum.event.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import ru.yandex.practicum.category.CategoryModel;
 import ru.yandex.practicum.user.UserModel;
 
@@ -11,6 +9,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "events")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString

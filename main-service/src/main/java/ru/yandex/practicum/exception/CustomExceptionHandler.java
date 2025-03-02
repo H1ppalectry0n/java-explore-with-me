@@ -11,20 +11,9 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler({MethodArgumentNotValidException.class, IllegalArgumentException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleValidationExceptions(MethodArgumentNotValidException ex) {
-        return ApiError.builder()
-                .status("BAD_REQUEST")
-                .reason("Incorrectly made request.")
-                .message(ex.getMessage())
-                .timestamp(LocalDateTime.now())
-                .build();
-    }
-
-    @ExceptionHandler(IllegalArgumentException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleIllegalArgumentException(IllegalArgumentException ex) {
+    public ApiError handleValidationExceptions(Throwable ex) {
         return ApiError.builder()
                 .status("BAD_REQUEST")
                 .reason("Incorrectly made request.")

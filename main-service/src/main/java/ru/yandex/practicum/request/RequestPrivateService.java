@@ -3,6 +3,7 @@ package ru.yandex.practicum.request;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.event.model.EventModel;
 import ru.yandex.practicum.event.model.EventState;
 import ru.yandex.practicum.event.repository.EventRepository;
@@ -18,12 +19,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class RequestPrivateService {
 
     private final RequestRepository requestRepository;
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
 
+    @Transactional(readOnly = true)
     public List<ParticipationRequestDto> findAllByUserId(long userId) {
         UserModel user = userRepository.findById(userId).orElseThrow(() -> new NotFoundException(
                 "User with id=%d was not found".formatted(userId)

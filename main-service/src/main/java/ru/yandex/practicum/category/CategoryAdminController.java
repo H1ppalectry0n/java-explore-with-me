@@ -23,7 +23,7 @@ public class CategoryAdminController {
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryDto createNewCategory(@RequestBody @Valid CategoryDto categoryDto, HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("CategoryAdmin: create new category {}", categoryDto.toString());
+        log.info("CategoryAdmin: create new category {}", categoryDto.toString());
         return categoryAdminService.createNewCategory(categoryDto);
     }
 
@@ -31,7 +31,7 @@ public class CategoryAdminController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCategory(@PathVariable(name = "catId") long catId, HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("CategoryAdmin: deleting category with id = {}", catId);
+        log.info("CategoryAdmin: deleting category with id = {}", catId);
         categoryAdminService.deleteCategory(catId);
     }
 
@@ -40,7 +40,7 @@ public class CategoryAdminController {
                                           @RequestBody @Valid CategoryDto categoryDto,
                                           HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("CategoryAdmin: updating category with id = {} : {}", catId, categoryDto.toString());
+        log.info("CategoryAdmin: updating category with id = {} : {}", catId, categoryDto.toString());
         return categoryAdminService.updateCategoryById(catId, categoryDto);
     }
 }

@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.EwmStatsClient;
@@ -17,7 +16,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/events")
-@Transactional
 @RequiredArgsConstructor
 @Slf4j
 @Validated
@@ -42,7 +40,7 @@ public class EventPublicController {
         }
 
         ewmStatsClient.hit(request);
-        log.debug("EventPublic: find events with param = { text = {}, categoryIds={}, paid={}, rangeStart={}, rangeEnd={}, onlyAvailable={} }",
+        log.info("EventPublic: find events with param = { text = {}, categoryIds={}, paid={}, rangeStart={}, rangeEnd={}, onlyAvailable={} }",
                 text, categoryIds, paid, rangeStart, rangeEnd, onlyAvailable);
         return eventPublicService.findAllWithFilters(from, size, request.getRemoteAddr(), text, categoryIds, paid, rangeStart, rangeEnd, onlyAvailable, sortType);
     }
@@ -50,7 +48,7 @@ public class EventPublicController {
     @GetMapping("/{eventId}")
     public EventFullDto findById(@PathVariable(name = "eventId") long eventId, HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("EventPublic: find event by id={}", eventId);
+        log.info("EventPublic: find event by id={}", eventId);
         return eventPublicService.findById(eventId, request.getRemoteAddr());
     }
 }

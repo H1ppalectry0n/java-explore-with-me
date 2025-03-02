@@ -25,7 +25,7 @@ public class UserAdminController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createNewUser(@RequestBody @Valid UserDto userDto, HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("UserAdmin: create new user {}", userDto.toString());
+        log.info("UserAdmin: create new user {}", userDto.toString());
         return userAdminService.createNewUser(userDto);
     }
 
@@ -33,7 +33,7 @@ public class UserAdminController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable(name = "userId") long userId, HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("UserAdmin: deleting user with id = {}", userId);
+        log.info("UserAdmin: deleting user with id = {}", userId);
         userAdminService.deleteUser(userId);
     }
 
@@ -43,7 +43,7 @@ public class UserAdminController {
                                   @RequestParam(name = "size", required = false, defaultValue = "10") int size,
                                   HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("UserAdmin: getting users with ids = {}, from = {}, size = {}", ids, from, size);
+        log.info("UserAdmin: getting users with ids = {}, from = {}, size = {}", ids, from, size);
         return userAdminService.getUsers(from, size, ids);
     }
 }

@@ -5,7 +5,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.EwmStatsClient;
@@ -21,7 +20,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users/{userId}/events")
-@Transactional
 @RequiredArgsConstructor
 @Slf4j
 @Validated
@@ -36,7 +34,7 @@ public class EventPrivateController {
                                            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
                                            HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("EventPrivate: find events by userId={}", userId);
+        log.info("EventPrivate: find events by userId={}", userId);
         return eventPrivateService.findByUserId(userId, from, size);
     }
 
@@ -46,7 +44,7 @@ public class EventPrivateController {
                                      @RequestBody @Valid NewEventDto event,
                                      HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("EventPrivate: post new event by userId={} {}", userId, event);
+        log.info("EventPrivate: post new event by userId={} {}", userId, event);
         return eventPrivateService.postNewEvent(userId, event);
     }
 
@@ -55,7 +53,7 @@ public class EventPrivateController {
                                              @PathVariable(name = "eventId") long eventId,
                                              HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("EventPrivate: find event id={} by userId={}", eventId, userId);
+        log.info("EventPrivate: find event id={} by userId={}", eventId, userId);
         return eventPrivateService.findByEventIdForUser(userId, eventId);
     }
 
@@ -65,7 +63,7 @@ public class EventPrivateController {
                                     @RequestBody @Valid UpdateEventUserDto updatedEvent,
                                     HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("EventPrivate: update event id={} by userId={} event={}", eventId, userId, updatedEvent);
+        log.info("EventPrivate: update event id={} by userId={} event={}", eventId, userId, updatedEvent);
         return eventPrivateService.updateEvent(userId, eventId, updatedEvent);
     }
 
@@ -74,7 +72,7 @@ public class EventPrivateController {
                                                                  @PathVariable(name = "eventId") long eventId,
                                                                  HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("EventPrivate: find request for event id={} by userId={}", eventId, userId);
+        log.info("EventPrivate: find request for event id={} by userId={}", eventId, userId);
         return eventPrivateService.findAllRequestsForEvent(userId, eventId);
     }
 
@@ -84,7 +82,7 @@ public class EventPrivateController {
                                                          @RequestBody @Valid EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest,
                                                          HttpServletRequest request) {
         ewmStatsClient.hit(request);
-        log.debug("EventPrivate: update request for event id={} by userId={} {}", eventId, userId, eventRequestStatusUpdateRequest);
+        log.info("EventPrivate: update request for event id={} by userId={} {}", eventId, userId, eventRequestStatusUpdateRequest);
         return eventPrivateService.updateRequests(userId, eventId, eventRequestStatusUpdateRequest);
 
     }

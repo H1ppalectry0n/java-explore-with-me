@@ -2,6 +2,7 @@ package ru.yandex.practicum.compilation.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.compilation.CompilationMapper;
 import ru.yandex.practicum.compilation.CompilationModel;
 import ru.yandex.practicum.compilation.CompilationRepository;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CompilationAdminService {
 
     private final CompilationRepository compilationRepository;
