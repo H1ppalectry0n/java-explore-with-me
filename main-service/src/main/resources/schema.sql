@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS compilations_events;
 DROP TABLE IF EXISTS compilations;
+DROP TABLE IF EXISTS comments;
 DROP TABLE IF EXISTS requests;
 DROP TABLE IF EXISTS events_view;
 DROP TABLE IF EXISTS events;
@@ -67,7 +68,17 @@ CREATE TABLE IF NOT EXISTS compilations (
 CREATE TABLE IF NOT EXISTS compilations_events (
     event_id BIGINT NOT NULL,
     compilation_id BIGINT NOT NULL,
+
     PRIMARY KEY (event_id, compilation_id),
     CONSTRAINT fk_event FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE RESTRICT,
     CONSTRAINT fk_compilation FOREIGN KEY (compilation_id) REFERENCES compilations(id) ON DELETE RESTRICT
+);
+
+CREATE TABLE IF NOT EXISTS comments (
+    id BIGSERIAL PRIMARY KEY,
+    event_id BIGINT NOT NULL REFERENCES events(id) ON DELETE RESTRICT,
+    author_id BIGINT NOT NULL REFERENCES users(id) ON DELETE RESTRICT,
+    text VARCHAR(500) NOT NULL,
+    created TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW(),
+    status VARCHAR(20) NOT NULL
 );

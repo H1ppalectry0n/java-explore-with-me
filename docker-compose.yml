@@ -38,6 +38,8 @@ services:
   ewm-db:
     image: postgres:16.1
     container_name: postgres-ewm-main-db
+    ports:
+      - 5432:5432
     environment:
       - POSTGRES_PASSWORD=root
       - POSTGRES_USER=root
